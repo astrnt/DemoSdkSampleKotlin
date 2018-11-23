@@ -1,0 +1,101 @@
+ext {
+    versions = [
+            androidX        : "1.0.0",
+            androidX1       : "1.0.1",
+            androidX2       : "1.0.2",
+            crash           : '16.2.1',
+            firebaseCore    : '16.0.4',
+            moshi           : "1.5.0",
+            okHttp          : "3.12.0",
+            retrofit        : '2.4.0',
+            dagger          : '2.17',
+            butterKnife     : '9.0.0-rc1',
+            rxKotlin        : '2.3.0',
+            rxAndroid       : '2.1.0',
+            rxPermissions   : '0.9.4@aar',
+            sqlbrite        : '1.1.2',
+            traceur         : '1.0.1',
+            stetho          : '1.5.0',
+            timber          : '4.7.1',
+            glide           : '4.8.0',
+            sherlock        : '1.0.4@aar',
+            multiDex        : '2.0.0',
+
+    ]
+
+    supportDeps = [
+            material         : "com.google.android.material:material:1.0.0",
+            appcompatV7      : "androidx.appcompat:appcompat:$versions.androidX2",
+            cardView         : "androidx.cardview:cardview:$versions.androidX",
+            recyclerView     : "androidx.recyclerview:recyclerview:$versions.androidX",
+            supportAnnotation: "androidx.annotation:annotation:$versions.androidX",
+            supportV13       : "androidx.legacy:legacy-support-v13:$versions.androidX",
+            gridLayout       : "androidx.gridlayout:gridlayout:$versions.androidX",
+            vectorDrawable   : "androidx.vectordrawable:vectordrawable:$versions.androidX1",
+            multiDex         : "androidx.multidex:multidex:$versions.multiDex"
+    ]
+
+    rxJava = [
+            rxKotlin        : "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlin",
+            rxAndroid       : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
+            traceur         : "com.tspoon.traceur:traceur:$versions.traceur",
+            rxRermissions   : "com.tbruyelle.rxpermissions:rxpermissions:$versions.rxPermissions"
+    ]
+
+    retrofit = [
+            retrofit        : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+            rxAdapter       : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+            moshiConverter  : "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+    ]
+
+    moshi = [
+            moshi   : "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+    ]
+
+    okHttp = [
+            logger  : "com.squareup.okhttp3:logging-interceptor:$versions.okHttp",
+            okhttp  : "com.squareup.okhttp3:okhttp:$versions.okHttp",
+            stetho  : "com.facebook.stetho:stetho-okhttp3:$versions.stetho"
+    ]
+
+    googlePlay = [
+            firebaseCore     : "com.google.firebase:firebase-core:$versions.firebaseCore",
+            crash            : "com.google.firebase:firebase-crash:$versions.crash"
+    ]
+    onlyDebug = [
+            chuck   : "com.readystatesoftware.chuck:library:1.1.0"
+    ]
+
+    onlyRelease = [
+            chuckNoOp       : 'com.readystatesoftware.chuck:library-no-op:1.1.0',
+            sherlockNoOp    : 'com.github.ajitsing:sherlock-no-op:1.0.4@aar'
+    ]
+
+    leakCannary = "com.squareup.leakcanary:leakcanary-android:1.5.1"
+    timber = "com.jakewharton.timber:timber:$versions.timber"
+    sherlock = "com.github.ajitsing:sherlock:$versions.sherlock"
+
+    dagger = "com.google.dagger:dagger:$versions.dagger"
+    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
+
+    butterKnife = "com.jakewharton:butterknife:$versions.butterKnife"
+    butterKnifeCompiler = "com.jakewharton:butterknife-compiler:$versions.butterKnife"
+
+    glide = "com.github.bumptech.glide:glide:$versions.glide"
+    glideCompiler = "com.github.bumptech.glide:compiler:$versions.glide"
+    glideOkhttp = "com.github.bumptech.glide:okhttp3-integration:$versions.glide"
+    databindingCompiler = "com.android.databinding:compiler:3.1.1"
+
+    rippleEffect = 'com.balysv:material-ripple:1.0.2'
+
+    googlePlayLibs = googlePlay.values()
+    supportLibs = supportDeps.values()
+    networkLibs = retrofit.values() + okHttp.values() + moshi.values()
+    rxJavaLibs = rxJava.values()
+    otherLibs = [butterKnife, timber, dagger, glide, rippleEffect]
+
+    debugLibs = onlyDebug.values() + leakCannary
+    releaseLibs = onlyRelease.values() + leakCannary
+    annotationProcessorLibs = [butterKnifeCompiler, daggerCompiler, glideCompiler, databindingCompiler]
+
+}

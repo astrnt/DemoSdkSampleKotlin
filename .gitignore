@@ -1,0 +1,17 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+.DS_Store
+/build
+.idea/
+*iml
+*.iml
+*/build
+fastlane
+*.apk
+
+app/live/release/output\.json
+
+app/beta/release/output\.json
+
+*.aab

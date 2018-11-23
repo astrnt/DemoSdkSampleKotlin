@@ -1,4 +1,4 @@
-# IniHalal Android
+# KYCKdemo Android
 
 ## This project uses:
 - [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
@@ -66,7 +66,7 @@ To ensure that your code is valid and stable use check:
 ```
 MIT License
 
-Copyright (c) 2018 CoMeet Developer (http://comeetdev.com)
+Copyright (c) 2018 Astronaut (http://astrnt.co)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
