@@ -20,7 +20,7 @@ class SendingFileActivity : BaseActivity() {
         fun start(context: Context, extName: String) {
             val intent = Intent(context, SendingFileActivity::class.java)
             intent.putExtra(EXTRA_NAME, extName)
-            return context.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 

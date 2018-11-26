@@ -12,7 +12,7 @@ class SuccessActivity : BaseActivity() {
     companion object {
 
         fun start(context: Context) {
-            return context.startActivity(Intent(context, SuccessActivity::class.java))
+            context.startActivity(Intent(context, SuccessActivity::class.java))
         }
     }
 

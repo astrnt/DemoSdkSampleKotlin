@@ -18,4 +18,9 @@
 
     <!-- Deeplink -->
     <string name="deeplink_title">Open With KYCK App</string>
+
+    <!-- Record Button -->
+    <string name="start">Start</string>
+    <string name="finish">Finish</string>
+
 </resources>

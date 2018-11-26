@@ -14,7 +14,7 @@ class TakePictureActivity : BaseActivity() {
     companion object {
 
         fun start(context: Context) {
-            return context.startActivity(Intent(context, TakePictureActivity::class.java))
+            context.startActivity(Intent(context, TakePictureActivity::class.java))
         }
     }
 
