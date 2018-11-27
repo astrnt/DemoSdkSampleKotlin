@@ -6,7 +6,7 @@ import co.astrnt.kyck.injection.ApplicationContext
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = arrayOf(ApiModule::class))
+@Module
 class AppModule(private val application: Application) {
 
     @Provides

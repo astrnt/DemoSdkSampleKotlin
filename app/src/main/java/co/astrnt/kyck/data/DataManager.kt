@@ -1,24 +1,19 @@
 package co.astrnt.kyck.data
 
-import co.astrnt.kyck.data.model.Pokemon
-import co.astrnt.kyck.data.remote.PokemonApi
-import io.reactivex.Single
+import co.astrnt.demosdk.dao.RegisterApiDao
+import co.astrnt.demosdk.repository.CandidateRepository
+import co.astrnt.kyck.AstrntApplication
+import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DataManager @Inject
-constructor(private val pokemonApi: PokemonApi) {
+constructor() {
 
-    fun getPokemonList(limit: Int): Single<List<String>> {
-        return pokemonApi.getPokemonList(limit)
-                .toObservable()
-                .flatMapIterable { (results) -> results }
-                .map { (name) -> name }
-                .toList()
-    }
+    private val repository: CandidateRepository = CandidateRepository(AstrntApplication.getApi())
 
-    fun getPokemon(name: String): Single<Pokemon> {
-        return pokemonApi.getPokemon(name)
+    fun doRegister(name: String, email: String): Observable<RegisterApiDao> {
+        return repository.registerCandidate(name, email)
     }
 }

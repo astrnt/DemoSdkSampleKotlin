@@ -89,12 +89,13 @@ ext {
     rippleEffect = 'com.balysv:material-ripple:1.0.2'
     circularView = 'com.github.rjsvieira:circularView:1.3.3'
     cameraView = 'com.github.derohimat:CameraView:1.7.2'
+    hawk = 'com.orhanobut:hawk:2.0.1'
 
     googlePlayLibs = googlePlay.values()
     supportLibs = supportDeps.values()
     networkLibs = retrofit.values() + okHttp.values() + moshi.values()
     rxJavaLibs = rxJava.values()
-    otherLibs = [butterKnife, timber, dagger, glide, rippleEffect, circularView, cameraView]
+    otherLibs = [butterKnife, timber, dagger, glide, rippleEffect, circularView, cameraView, hawk]
 
     debugLibs = onlyDebug.values() + leakCannary
     releaseLibs = onlyRelease.values() + leakCannary

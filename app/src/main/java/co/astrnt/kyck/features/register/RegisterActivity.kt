@@ -8,6 +8,7 @@ import android.widget.Toast
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseMvpActivity
 import co.astrnt.kyck.features.takepicture.TakePictureActivity
+import com.orhanobut.hawk.Hawk
 import com.tbruyelle.rxpermissions2.Permission
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.Observer
@@ -34,13 +35,18 @@ class RegisterActivity : BaseMvpActivity(), RegisterMvpView {
         initToolbar(toolbar, "Registration")
 
         activityComponent().inject(this)
-        presenter.attachView(this)
+        attachView()
+
+        val candidateId = Hawk.get("CandidateId") as String
+
+        if (!candidateId.isBlank()) {
+            moveToTakePicture()
+        }
 
         btn_start.setOnClickListener {
 
             if (permissionCounter == 3) {
-                TakePictureActivity.start(context)
-                finish()
+                validateInput()
             } else {
                 Toast.makeText(context, "Some permission not granted", Toast.LENGTH_LONG).show()
             }
@@ -107,6 +113,32 @@ class RegisterActivity : BaseMvpActivity(), RegisterMvpView {
         }
     }
 
+    private fun validateInput() {
+        val name = inpName.text.toString()
+        val email = inpEmail.text.toString()
+
+        if (name.isBlank()) {
+            inpName.error = "Name is still empty"
+            inpName.isFocusable = true
+            return
+        }
+
+        if (email.isBlank()) {
+            inpEmail.error = "Email is still empty"
+            inpEmail.isFocusable = true
+            return
+        }
+
+        presenter.doRegister(name, email)
+    }
+
     override fun showResult() {
+        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
+        moveToTakePicture()
+    }
+
+    private fun moveToTakePicture() {
+        TakePictureActivity.start(context)
+        finish()
     }
 }

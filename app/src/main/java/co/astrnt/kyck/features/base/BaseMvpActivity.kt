@@ -1,5 +1,7 @@
 package co.astrnt.kyck.features.base
 
+import android.widget.Toast
+
 abstract class BaseMvpActivity : BaseActivity(), MvpView {
 
     protected abstract fun attachView()
@@ -15,5 +17,6 @@ abstract class BaseMvpActivity : BaseActivity(), MvpView {
     }
 
     override fun showError(error: Throwable) {
+        Toast.makeText(context, error.message, Toast.LENGTH_LONG).show()
     }
 }

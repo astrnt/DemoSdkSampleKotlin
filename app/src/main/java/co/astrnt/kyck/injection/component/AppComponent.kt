@@ -3,7 +3,6 @@ package co.astrnt.kyck.injection.component
 import android.app.Application
 import android.content.Context
 import co.astrnt.kyck.data.DataManager
-import co.astrnt.kyck.data.remote.PokemonApi
 import co.astrnt.kyck.injection.ApplicationContext
 import co.astrnt.kyck.injection.module.AppModule
 import dagger.Component
@@ -20,5 +19,4 @@ interface AppComponent {
 
     fun dataManager(): DataManager
 
-    fun pokemonApi(): PokemonApi
 }

@@ -12,6 +12,7 @@ import co.astrnt.kyck.features.sendingfile.SendingFileActivity
 import co.astrnt.kyck.widget.RecordButtonView
 import co.astrnt.kyck.widget.RecordButtonView.Companion.STATE_ON_FINISH
 import co.astrnt.kyck.widget.RecordButtonView.Companion.STATE_ON_RECORD
+import com.orhanobut.hawk.Hawk
 import com.otaliastudios.cameraview.CameraListener
 import kotlinx.android.synthetic.main.activity_video_record.*
 import java.io.File
@@ -44,7 +45,7 @@ class VideoRecordActivity : BaseActivity(), RecordButtonView.RecordListener {
 
             override fun onVideoTaken(video: File?) {
                 recordFile = video
-                moveToPreview()
+                moveToSendingFile()
             }
         })
     }
@@ -136,10 +137,9 @@ class VideoRecordActivity : BaseActivity(), RecordButtonView.RecordListener {
         if (countDownTimer != null) countDownTimer?.cancel()
     }
 
-    private fun moveToPreview() {
+    private fun moveToSendingFile() {
         if (recordFile != null) {
-            //            VideoPreviewRecordActivity.start(context, Uri.fromFile(recordFile));
-            //            finish();
+            Hawk.put("VideoFilePath", recordFile?.absolutePath)
             SendingFileActivity.start(context, "TakeRecord")
             finish()
         }
