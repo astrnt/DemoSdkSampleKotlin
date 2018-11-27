@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import co.astrnt.demosdk.dao.QuestionApiDao
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
-import co.astrnt.kyck.features.sendingfile.SendingFileActivity
+import co.astrnt.kyck.features.sendingvideo.SendingVideoActivity
 import co.astrnt.kyck.widget.RecordButtonView
 import co.astrnt.kyck.widget.RecordButtonView.Companion.STATE_ON_FINISH
 import co.astrnt.kyck.widget.RecordButtonView.Companion.STATE_ON_RECORD
@@ -22,13 +25,24 @@ class VideoRecordActivity : BaseActivity(), RecordButtonView.RecordListener {
     private var countDownTimer: CountDownTimer? = null
     private var recordFile: File? = null
     private var maxTime: Int = 0
+    private lateinit var questionApiDao: QuestionApiDao
+
+    companion object {
+
+        fun start(context: Context) {
+            val intent = Intent(context, VideoRecordActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 
-        maxTime = 30
+        questionApiDao = Hawk.get<QuestionApiDao>("Question")
+
+        maxTime = questionApiDao.maxTime.toInt()
 
         btnRecord.setRecordListener(this)
         btnRecord.setMaxTime(maxTime)
@@ -67,7 +81,7 @@ class VideoRecordActivity : BaseActivity(), RecordButtonView.RecordListener {
 
     override fun onCountdown() {
         txtTitle.text = "Question"
-        //        txtQuestion.setText(currentQuestion.getTitle());
+        txtQuestion.text = questionApiDao.title
         txtCountDown.text = btnRecord.maxProgress.toString()
         txtCountDown.visibility = View.VISIBLE
         countDownTimer = object : CountDownTimer((btnRecord.maxProgress * 1000).toLong(), 1000) {
@@ -140,16 +154,8 @@ class VideoRecordActivity : BaseActivity(), RecordButtonView.RecordListener {
     private fun moveToSendingFile() {
         if (recordFile != null) {
             Hawk.put("VideoFilePath", recordFile?.absolutePath)
-            SendingFileActivity.start(context, "TakeRecord")
+            SendingVideoActivity.start(context)
             finish()
-        }
-    }
-
-    companion object {
-
-        fun start(context: Context) {
-            val intent = Intent(context, VideoRecordActivity::class.java)
-            context.startActivity(intent)
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
+import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.toolbar.*
 
 class SuccessActivity : BaseActivity() {
@@ -23,6 +24,8 @@ class SuccessActivity : BaseActivity() {
         initToolbar(toolbar, "Finished")
 
         activityComponent().inject(this)
+
+        Hawk.deleteAll()
     }
 
 }

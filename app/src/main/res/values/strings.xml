@@ -20,5 +20,7 @@
     <!-- Record Button -->
     <string name="start">Start</string>
     <string name="finish">Finish</string>
+    <string name="oops">Oops...</string>
+    <string name="loading">Loading...</string>
 
 </resources>

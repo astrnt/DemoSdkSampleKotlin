@@ -12,6 +12,7 @@ import com.orhanobut.hawk.Hawk
 import com.singhajit.sherlock.core.Sherlock
 import com.squareup.leakcanary.LeakCanary
 import com.tspoon.traceur.Traceur
+import net.gotev.uploadservice.UploadService
 import timber.log.Timber
 
 class AstrntApplication : MultiDexApplication() {
@@ -33,6 +34,8 @@ class AstrntApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
+        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID
 
         Hawk.init(this).build()
 

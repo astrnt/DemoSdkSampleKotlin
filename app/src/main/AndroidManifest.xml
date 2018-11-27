@@ -56,10 +56,13 @@
             android:name=".features.takepicture.TakePictureActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".features.sendingidcard.SendingIdCardActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".features.takerecord.TakeRecordActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".features.sendingfile.SendingFileActivity"
+            android:name=".features.sendingvideo.SendingVideoActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".features.success.SuccessActivity"

@@ -1,5 +1,7 @@
 package co.astrnt.kyck.data
 
+import android.graphics.Bitmap
+import co.astrnt.demosdk.dao.BaseApiDao
 import co.astrnt.demosdk.dao.RegisterApiDao
 import co.astrnt.demosdk.repository.CandidateRepository
 import co.astrnt.kyck.AstrntApplication

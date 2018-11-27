@@ -102,7 +102,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.1.0"
 
-    implementation 'com.github.astrnt:demo-sdk:0.0.3'
+    implementation 'com.github.astrnt:demo-sdk:0.0.6'
+    implementation 'com.github.derohimat:VideoSlimmer:0.1'
+
+    implementation 'com.github.derohimat:sweet-alert-dialog:1.5.5'
 
     implementation("com.github.esafirm.android-image-picker:imagepicker:1.13.1", {
         exclude group: 'com.github.bumptech.glide', module: 'glide'
@@ -124,6 +127,10 @@ dependencies {
     debugImplementation(sherlock) {
         transitive = true
     }
+
+    def uploadServiceVersion = "3.4.2"
+    implementation "net.gotev:uploadservice:$uploadServiceVersion"
+    implementation "net.gotev:uploadservice-okhttp:$uploadServiceVersion"
 
     // APT dependencies
     kapt annotationProcessorLibs

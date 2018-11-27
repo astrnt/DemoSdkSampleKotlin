@@ -37,10 +37,11 @@ class RegisterActivity : BaseMvpActivity(), RegisterMvpView {
         activityComponent().inject(this)
         attachView()
 
-        val candidateId = Hawk.get("CandidateId") as String
+        val candidateId = Hawk.get<String>("CandidateId")
 
-        if (!candidateId.isBlank()) {
+        if (!candidateId.isNullOrBlank()) {
             moveToTakePicture()
+            return
         }
 
         btn_start.setOnClickListener {
@@ -53,7 +54,7 @@ class RegisterActivity : BaseMvpActivity(), RegisterMvpView {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Handler().postDelayed({ checkingPermission() }, 3000)
+            Handler().postDelayed({ checkingPermission() }, 1000)
         } else {
             permissionCounter = 3
         }
@@ -133,7 +134,6 @@ class RegisterActivity : BaseMvpActivity(), RegisterMvpView {
     }
 
     override fun showResult() {
-        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
         moveToTakePicture()
     }
 

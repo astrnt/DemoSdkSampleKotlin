@@ -24,6 +24,7 @@ constructor(private val dataManager: DataManager) : BasePresenter<RegisterMvpVie
                                 showProgress(false)
                                 if (response.status == "SUCCESS") {
                                     Hawk.put("CandidateId", response.candidateIdentifier)
+                                    Hawk.put("Question", response.questions)
                                     showResult()
                                 } else {
                                     showError(Throwable(response.message))

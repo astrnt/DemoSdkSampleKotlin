@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
-import co.astrnt.kyck.features.sendingfile.SendingFileActivity
+import co.astrnt.kyck.features.sendingidcard.SendingIdCardActivity
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import com.orhanobut.hawk.Hawk
@@ -43,7 +43,7 @@ class TakePictureActivity : BaseActivity() {
             val image = images.first()
             Hawk.put("IdCardPath", image.path)
 
-            SendingFileActivity.start(context, "TakePicture")
+            SendingIdCardActivity.start(context)
             finish()
             return
         }
