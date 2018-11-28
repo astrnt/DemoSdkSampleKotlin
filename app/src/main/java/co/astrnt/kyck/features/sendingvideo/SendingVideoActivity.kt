@@ -3,19 +3,24 @@ package co.astrnt.kyck.features.sendingvideo
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import co.astrnt.demosdk.dao.VideoInfo
 import co.astrnt.demosdk.utils.VideoUtils
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
 import co.astrnt.kyck.features.success.SuccessActivity
 import co.astrnt.kyck.util.DialogFactory
 import com.orhanobut.hawk.Hawk
-import com.zolad.videoslimmer.VideoSlimmer
 import kotlinx.android.synthetic.main.activity_sending_file.*
 import kotlinx.android.synthetic.main.toolbar.*
 import net.gotev.uploadservice.*
+import net.ypresto.androidtranscoder.MediaTranscoder
+import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets
 import java.io.File
 
 class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
+
+    private lateinit var outputPath: String
+    private var videoInfo: VideoInfo? = null
 
     companion object {
 
@@ -35,39 +40,39 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
         txtMessage.text = "Sending your video"
 
         val candidateId = Hawk.get<String>("CandidateId")
-        val videoPath = Hawk.get<String>("VideoFilePath")
+        val srcPath = Hawk.get<String>("VideoFilePath")
 
         val directory = File(context.filesDir, "video")
         if (!directory.exists()) {
             directory.mkdir()
         }
 
-        val videoOutputPath = File(directory, "output_" + System.currentTimeMillis() + "_video.mp4").absolutePath
-        val videoInfo = VideoUtils.getVideoInfo(videoPath)
+        outputPath = File(directory, "output_" + System.currentTimeMillis() + "_video.mp4").absolutePath
+        videoInfo = VideoUtils.getVideoInfo(srcPath)
 
         if (videoInfo != null) {
-            VideoSlimmer.convertVideo(videoPath, videoOutputPath, videoInfo.width, videoInfo.height, videoInfo.bitrate, object : VideoSlimmer.ProgressListener {
-                override fun onStart() {
-                    //convert start
-                    showToast("Start Compress")
+
+            val listener = object : MediaTranscoder.Listener {
+                override fun onTranscodeProgress(progress: Double) {
                 }
 
-                override fun onFinish(result: Boolean) {
-                    //convert finish,result(true is success,false is fail)
-                    if (result) {
-                        showToast("Success Compress")
-                        doUploadVideo(candidateId, videoOutputPath)
-                    } else {
-                        showToast("Error when compress")
-                    }
+                override fun onTranscodeCompleted() {
+                    doUploadVideo(candidateId, outputPath)
                 }
 
-                override fun onProgress(percent: Float) {
-                    //percent of progress
+                override fun onTranscodeCanceled() {
+                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder canceled")
                 }
-            })
+
+                override fun onTranscodeFailed(exception: Exception) {
+                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder error occurred")
+                }
+            }
+
+            MediaTranscoder.getInstance().transcodeVideo(srcPath, outputPath,
+                    MediaFormatStrategyPresets.createAndroid720pStrategy(), listener)
         } else {
-            showToast("Error when compress")
+            showToast("Error when compress, video not found")
         }
 
     }
