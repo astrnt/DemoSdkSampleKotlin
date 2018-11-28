@@ -84,7 +84,7 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
 
         MultipartUploadRequest(context, "http://beta.astrnt.co/api/astronaut/kyck/video/save")
                 .addParameter("candidate_identifier", candidateId)
-                .addFileToUpload(File(videoPath).absolutePath, "file")
+                .addFileToUpload(videoPath, "file")
                 .setUtf8Charset()
                 .setNotificationConfig(notificationConfig)
                 .setAutoDeleteFilesAfterSuccessfulUpload(false)
