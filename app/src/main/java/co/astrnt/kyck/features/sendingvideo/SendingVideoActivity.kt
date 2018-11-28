@@ -21,6 +21,8 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
 
     private lateinit var outputPath: String
     private var videoInfo: VideoInfo? = null
+    private lateinit var candidateId: String
+    private lateinit var srcPath: String
 
     companion object {
 
@@ -39,8 +41,13 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
         initToolbar(toolbar, "Step 2")
         txtMessage.text = "Sending your video"
 
-        val candidateId = Hawk.get<String>("CandidateId")
-        val srcPath = Hawk.get<String>("VideoFilePath")
+        candidateId = Hawk.get<String>("CandidateId")
+        srcPath = Hawk.get<String>("VideoFilePath")
+
+        doCompressVideo()
+    }
+
+    private fun doCompressVideo() {
 
         val directory = File(context.filesDir, "video")
         if (!directory.exists()) {
@@ -57,34 +64,34 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
                 }
 
                 override fun onTranscodeCompleted() {
-                    doUploadVideo(candidateId, outputPath)
+                    doUploadVideo()
                 }
 
                 override fun onTranscodeCanceled() {
-                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder canceled")
+                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder canceled").show()
                 }
 
                 override fun onTranscodeFailed(exception: Exception) {
-                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder error occurred")
+                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder error occurred").show()
                 }
             }
 
             MediaTranscoder.getInstance().transcodeVideo(srcPath, outputPath,
                     MediaFormatStrategyPresets.createAndroid720pStrategy(), listener)
         } else {
-            showToast("Error when compress, video not found")
+            DialogFactory.createErrorDialog(context, "Error when compress, video not found").show()
         }
 
     }
 
-    fun doUploadVideo(candidateId: String, videoPath: String) {
+    private fun doUploadVideo() {
 
         val notificationConfig = UploadNotificationConfig()
         notificationConfig.isRingToneEnabled = true
 
         MultipartUploadRequest(context, "http://beta.astrnt.co/api/astronaut/kyck/video/save")
                 .addParameter("candidate_identifier", candidateId)
-                .addFileToUpload(videoPath, "file")
+                .addFileToUpload(outputPath, "file")
                 .setUtf8Charset()
                 .setNotificationConfig(notificationConfig)
                 .setAutoDeleteFilesAfterSuccessfulUpload(false)
@@ -94,14 +101,15 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
     }
 
     override fun onCancelled(ctx: Context?, uploadInfo: UploadInfo?) {
-        DialogFactory.createErrorDialog(context, "Upload canceled")
+        DialogFactory.createErrorDialog(context, "Upload canceled").show()
     }
 
     override fun onProgress(ctx: Context?, uploadInfo: UploadInfo?) {
     }
 
     override fun onError(ctx: Context?, uploadInfo: UploadInfo?, serverResponse: ServerResponse?, exception: java.lang.Exception?) {
-        DialogFactory.createErrorDialog(context, "Upload Error")
+        doUploadVideo()
+        DialogFactory.createErrorDialog(context, "Upload Error").show()
     }
 
     override fun onCompleted(ctx: Context?, uploadInfo: UploadInfo?, serverResponse: ServerResponse?) {

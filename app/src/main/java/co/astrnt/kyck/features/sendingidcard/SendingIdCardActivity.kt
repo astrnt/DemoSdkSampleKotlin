@@ -3,7 +3,6 @@ package co.astrnt.kyck.features.sendingidcard
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
 import co.astrnt.kyck.features.takerecord.TakeRecordActivity
@@ -14,6 +13,9 @@ import kotlinx.android.synthetic.main.toolbar.*
 import net.gotev.uploadservice.*
 
 class SendingIdCardActivity : BaseActivity(), UploadStatusDelegate {
+
+    private lateinit var candidateId: String
+    private lateinit var idCardPath: String
 
     companion object {
 
@@ -32,15 +34,13 @@ class SendingIdCardActivity : BaseActivity(), UploadStatusDelegate {
         initToolbar(toolbar, "Step 1")
         txtMessage.text = "Sending your ID Card picture"
 
-        val candidateId = Hawk.get<String>("CandidateId")
-        val idCardPath = Hawk.get<String>("IdCardPath")
+        candidateId = Hawk.get<String>("CandidateId")
+        idCardPath = Hawk.get<String>("IdCardPath")
 
-        Handler().postDelayed({
-            doUploadIdCard(candidateId, idCardPath)
-        }, 1000)
+        doUploadIdCard()
     }
 
-    private fun doUploadIdCard(candidateId: String, idCardPath: String) {
+    private fun doUploadIdCard() {
 
         val notificationConfig = UploadNotificationConfig()
         notificationConfig.isRingToneEnabled = true
@@ -57,14 +57,15 @@ class SendingIdCardActivity : BaseActivity(), UploadStatusDelegate {
     }
 
     override fun onCancelled(ctx: Context?, uploadInfo: UploadInfo?) {
-        DialogFactory.createErrorDialog(context, "Upload canceled")
+        DialogFactory.createErrorDialog(context, "Upload canceled").show()
     }
 
     override fun onProgress(ctx: Context?, uploadInfo: UploadInfo?) {
     }
 
     override fun onError(ctx: Context?, uploadInfo: UploadInfo?, serverResponse: ServerResponse?, exception: java.lang.Exception?) {
-        DialogFactory.createErrorDialog(context, "Upload Error")
+        doUploadIdCard()
+        DialogFactory.createErrorDialog(context, "Upload Error").show()
     }
 
     override fun onCompleted(ctx: Context?, uploadInfo: UploadInfo?, serverResponse: ServerResponse?) {
