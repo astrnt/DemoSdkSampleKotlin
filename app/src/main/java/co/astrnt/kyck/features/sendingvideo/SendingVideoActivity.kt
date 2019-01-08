@@ -3,8 +3,6 @@ package co.astrnt.kyck.features.sendingvideo
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import co.astrnt.demosdk.dao.VideoInfo
-import co.astrnt.demosdk.utils.VideoUtils
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
 import co.astrnt.kyck.features.success.SuccessActivity
@@ -14,15 +12,18 @@ import kotlinx.android.synthetic.main.activity_sending_file.*
 import kotlinx.android.synthetic.main.toolbar.*
 import net.gotev.uploadservice.*
 import net.ypresto.androidtranscoder.MediaTranscoder
-import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets
+import net.ypresto.androidtranscoder.strategy.DefaultAudioStrategy
+import net.ypresto.androidtranscoder.strategy.DefaultAudioStrategy.AUDIO_CHANNELS_AS_IS
+import net.ypresto.androidtranscoder.strategy.DefaultVideoStrategies
 import java.io.File
+import java.util.concurrent.Future
 
 class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
 
     private lateinit var outputPath: String
-    private var videoInfo: VideoInfo? = null
     private lateinit var candidateId: String
     private lateinit var srcPath: String
+    private var future: Future<Void>? = null
 
     companion object {
 
@@ -55,33 +56,27 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
         }
 
         outputPath = File(directory, "output_" + System.currentTimeMillis() + "_video.mp4").absolutePath
-        videoInfo = VideoUtils.getVideoInfo(srcPath)
 
-        if (videoInfo != null) {
+        future = MediaTranscoder.into(outputPath)
+                .setDataSource(srcPath)
+                .setVideoOutputStrategy(DefaultVideoStrategies.for360x480())
+                .setAudioOutputStrategy(DefaultAudioStrategy(AUDIO_CHANNELS_AS_IS))
+                .setListener(object : MediaTranscoder.Listener {
+                    override fun onTranscodeCompleted(successCode: Int) {
+                        doUploadVideo()
+                    }
 
-            val listener = object : MediaTranscoder.Listener {
-                override fun onTranscodeProgress(progress: Double) {
-                }
+                    override fun onTranscodeFailed(exception: Throwable) {
+                        DialogFactory.createErrorDialog(context, "Video Compress Transcoder error occurred").show()
+                    }
 
-                override fun onTranscodeCompleted() {
-                    doUploadVideo()
-                }
+                    override fun onTranscodeProgress(progress: Double) {
+                    }
 
-                override fun onTranscodeCanceled() {
-                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder canceled").show()
-                }
-
-                override fun onTranscodeFailed(exception: Exception) {
-                    DialogFactory.createErrorDialog(context, "Video Compress Transcoder error occurred").show()
-                }
-            }
-
-            MediaTranscoder.getInstance().transcodeVideo(srcPath, outputPath,
-                    MediaFormatStrategyPresets.createAndroid720pStrategy(), listener)
-        } else {
-            DialogFactory.createErrorDialog(context, "Error when compress, video not found").show()
-        }
-
+                    override fun onTranscodeCanceled() {
+                        DialogFactory.createErrorDialog(context, "Video Compress Transcoder canceled").show()
+                    }
+                }).transcode()
     }
 
     private fun doUploadVideo() {
