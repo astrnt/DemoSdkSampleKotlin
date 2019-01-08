@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import co.astrnt.kyck.R
+import co.astrnt.kyck.R.id.btn_start
 import co.astrnt.kyck.features.base.BaseMvpActivity
 import co.astrnt.kyck.features.takepicture.TakePictureActivity
 import com.orhanobut.hawk.Hawk
@@ -54,7 +55,7 @@ class RegisterActivity : BaseMvpActivity(), RegisterMvpView {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Handler().postDelayed({ checkingPermission() }, 1000)
+            Handler().postDelayed({ checkingPermission() }, 500)
         } else {
             permissionCounter = 3
         }
