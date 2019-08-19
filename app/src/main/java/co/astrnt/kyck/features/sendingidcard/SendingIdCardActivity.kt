@@ -3,6 +3,7 @@ package co.astrnt.kyck.features.sendingidcard
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import co.astrnt.kyck.BuildConfig
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
 import co.astrnt.kyck.features.takerecord.TakeRecordActivity
@@ -45,7 +46,7 @@ class SendingIdCardActivity : BaseActivity(), UploadStatusDelegate {
         val notificationConfig = UploadNotificationConfig()
         notificationConfig.isRingToneEnabled = true
 
-        MultipartUploadRequest(context, "http://beta.astrnt.co/api/astronaut/kyck/card-id/save")
+        MultipartUploadRequest(context, BuildConfig.API_URL + "astronaut/kyck/card-id/save")
                 .addParameter("candidate_identifier", candidateId)
                 .addFileToUpload(idCardPath, "file")
                 .setUtf8Charset()

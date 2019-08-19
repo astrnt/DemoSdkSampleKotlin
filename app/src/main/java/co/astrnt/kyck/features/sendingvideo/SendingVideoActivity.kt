@@ -3,6 +3,7 @@ package co.astrnt.kyck.features.sendingvideo
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import co.astrnt.kyck.BuildConfig
 import co.astrnt.kyck.R
 import co.astrnt.kyck.features.base.BaseActivity
 import co.astrnt.kyck.features.success.SuccessActivity
@@ -84,7 +85,7 @@ class SendingVideoActivity : BaseActivity(), UploadStatusDelegate {
         val notificationConfig = UploadNotificationConfig()
         notificationConfig.isRingToneEnabled = true
 
-        MultipartUploadRequest(context, "http://beta.astrnt.co/api/astronaut/kyck/video/save")
+        MultipartUploadRequest(context, BuildConfig.API_URL + "astronaut/kyck/video/save")
                 .addParameter("candidate_identifier", candidateId)
                 .addFileToUpload(outputPath, "file")
                 .setUtf8Charset()
