@@ -9,7 +9,7 @@ ext {
             okHttp          : "3.12.0",
             retrofit        : '2.4.0',
             dagger          : '2.17',
-            butterKnife     : '9.0.0-rc1',
+            butterKnife     : '10.1.0',
             rxKotlin        : '2.3.0',
             rxAndroid       : '2.1.0',
             rxPermissions   : '0.10.2',
