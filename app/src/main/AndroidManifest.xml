@@ -9,7 +9,9 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <uses-sdk tools:overrideLibrary="net.ypresto.androidtranscoder"/>
+    <uses-sdk tools:overrideLibrary="com.otaliastudios.transcoder"/>
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".AstrntApplication"

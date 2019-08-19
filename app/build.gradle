@@ -104,7 +104,7 @@ dependencies {
 
     implementation 'com.github.astrnt:demo-sdk:0.0.6'
 
-    implementation 'com.github.derohimat:android-transcoder:0.4.1'
+    implementation 'com.otaliastudios:transcoder:0.7.0'
 
     implementation 'com.github.derohimat:sweet-alert-dialog:1.5.5'
 
